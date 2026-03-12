@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — Atlanta Metropolitan State College</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:      #CC0000;
+      --red2:     #A80000;
+      --red3:     #8B0000;
+      --black:    #1A1A1A;
+      --black2:   #111111;
+      --offwhite: #F7F7F7;
+      --white:    #ffffff;
+      --muted:    #6B6B6B;
+      --border:   #DCDCDC;
+      --error:    #CC0000;
+      --text:     #1A1A1A;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--offwhite);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    /* ── Utility bar ──────────────────────────────── */
+    .util-bar {
+      background: var(--black2);
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      padding: 5px 36px;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+    }
+    .util-bar a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .util-bar a:hover { color: var(--red); }
+
+    /* ── Header ───────────────────────────────────── */
+    header {
+      background: var(--white);
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-bottom: 4px solid var(--red);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      text-decoration: none;
+    }
+
+    .logo-icon { display: flex; align-items: center; margin-right: 14px; }
+    .logo-svg  { width: 52px; height: 52px; }
+
+    .logo-text-wrap { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo-line1 {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.0rem;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .logo-line2 {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.0rem;
+      color: var(--black);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .header-badge {
+      background: var(--offwhite);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 2px;
+    }
+
+    /* ── Page body ────────────────────────────────── */
+    .page-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 460px 1fr;
+      align-items: start;
+      padding: 56px 24px 48px;
+    }
+
+    /* ── Side columns ─────────────────────────────── */
+    .side {
+      padding: 8px 32px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s ease forwards;
+    }
+    .side.left  { text-align: right; padding-right: 48px; }
+    .side.right { text-align: left;  padding-left: 48px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .side-heading {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--red);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .stat-block { margin-bottom: 28px; }
+    .stat-block .num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.6rem;
+      color: var(--black);
+      line-height: 1;
+    }
+    .stat-block .desc {
+      font-size: 0.76rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-top: 3px;
+    }
+
+    .red-rule {
+      width: 36px; height: 3px;
+      background: var(--red);
+      margin: 18px 0 22px;
+    }
+    .side.left .red-rule { margin-left: auto; }
+
+    .link-list { list-style: none; }
+    .link-list li { margin-bottom: 11px; }
+    .link-list a {
+      font-size: 0.82rem;
+      color: var(--black);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+    .link-list a:hover { color: var(--red); }
+    .link-arrow {
+      width: 16px; height: 16px;
+      background: var(--red);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #fff;
+      font-size: 0.8rem;
+    }
+
+    /* ── Login card ───────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: 4px;
+      box-shadow:
+        0 1px 4px rgba(0,0,0,0.06),
+        0 10px 30px rgba(0,0,0,0.09),
+        0 30px 60px rgba(0,0,0,0.05);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: cardIn 0.65s 0.1s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-banner {
+      background: var(--black);
+      padding: 28px 36px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-banner::before {
+      content: '';
+      position: absolute;
+      right: -16px; top: -16px;
+      width: 100px; height: 100px;
+      border: 18px solid rgba(204,0,0,0.12);
+      border-radius: 50%;
+    }
+    .card-banner::after {
+      content: '';
+      position: absolute;
+      right: 28px; bottom: -24px;
+      width: 60px; height: 60px;
+      border: 10px solid rgba(204,0,0,0.08);
+      border-radius: 50%;
+    }
+    .banner-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--red);
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+    .banner-title {
+      font-family: 'DM Serif Display', serif;
+      color: #fff;
+      font-size: 1.6rem;
+    }
+    .banner-sub {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.8rem;
+      margin-top: 5px;
+    }
+
+    .card-accent { height: 3px; background: var(--red); }
+    .card-body   { padding: 32px 36px 36px; }
+
+    /* ── Form ─────────────────────────────────────── */
+    .field { margin-bottom: 18px; }
+
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 7px;
+    }
+    .field-label label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .field-label a {
+      font-size: 0.72rem;
+      color: var(--red);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .field-label a:hover { text-decoration: underline; }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.93rem;
+      color: var(--text);
+      background: var(--offwhite);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    input:focus {
+      border-color: var(--red);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(204,0,0,0.1);
+    }
+    input.err { border-color: var(--error); }
+
+    .err-msg {
+      display: none;
+      font-size: 0.73rem;
+      color: var(--error);
+      margin-top: 4px;
+    }
+    .err-msg.show { display: block; }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .remember input[type="checkbox"] { display: none; }
+    .chk {
+      width: 16px; height: 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 2px;
+      background: var(--offwhite);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .remember input:checked ~ .chk { background: var(--red); border-color: var(--red); }
+    .remember input:checked ~ .chk::after { content: '✓'; color: #fff; font-size: 0.65rem; font-weight: 700; }
+    .remember span { font-size: 0.8rem; color: var(--muted); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 13px;
+      background: var(--red);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(204,0,0,0.3);
+    }
+    .btn-primary:hover { background: var(--red2); box-shadow: 0 6px 20px rgba(204,0,0,0.4); }
+    .btn-primary:active { transform: scale(0.99); }
+
+    .or-row {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0;
+    }
+    .or-row::before, .or-row::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .or-row span { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .btn-sso {
+      width: 100%;
+      padding: 11px;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-radius: 3px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-sso:hover { border-color: var(--black); background: var(--offwhite); }
+
+    .card-foot {
+      padding: 14px 36px;
+      background: var(--offwhite);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .card-foot a { font-size: 0.73rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .card-foot a:hover { color: var(--black); }
+    .card-foot a.cta { color: var(--red); font-weight: 700; }
+    .card-foot a.cta:hover { color: var(--red2); }
+
+    /* ── Success ──────────────────────────────────── */
+    #success { display: none; padding: 36px; text-align: center; }
+    .success-icon {
+      width: 56px; height: 56px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 4px 16px rgba(204,0,0,0.3);
+    }
+    .success-icon svg { width: 28px; height: 28px; }
+    #success h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--black); margin-bottom: 6px; }
+    #success p  { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── Page footer ──────────────────────────────── */
+    footer {
+      background: var(--black);
+      color: rgba(255,255,255,0.3);
+      font-size: 0.72rem;
+      text-align: center;
+      padding: 14px 32px;
+      line-height: 1.8;
+    }
+    footer a { color: rgba(255,255,255,0.55); text-decoration: none; }
+    footer a:hover { color: var(--red); }
+
+    /* ── Responsive ───────────────────────────────── */
+    @media (max-width: 920px) {
+      .page-body { grid-template-columns: 1fr; padding: 32px 16px; }
+      .side { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="util-bar">
+    <a href="https://my.atlm.edu">myATLM</a>
+    <a href="http://atlm.view.usg.edu">BrightSpace</a>
+    <a href="https://www.atlm.edu/students/financial-aid.aspx">Financial Aid</a>
+    <a href="https://www.atlm.edu/about-amc/directory.aspx">Directory</a>
+    <a href="https://www.atlm.edu/about-amc/directions.aspx">Campus Map</a>
+  </div>
+
+  <header>
+    <a class="logo-group" href="https://www.atlm.edu">
+      <div class="logo-icon">
+        <!-- Angular "A" matching the uploaded AMSC logo style -->
+        <svg class="logo-svg" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left leg of A -->
+          <polygon points="4,46 18,6 24,6 12,46" fill="#CC0000"/>
+          <!-- Right leg of A -->
+          <polygon points="28,6 44,46 36,46 22,6" fill="#CC0000"/>
+          <!-- Crossbar -->
+          <polygon points="10,30 42,30 40,24 12,24" fill="#CC0000"/>
+          <!-- Dark inner triangle (negative space) -->
+          <polygon points="18,6 34,6 26,28" fill="#ffffff" opacity="0.15"/>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <span class="logo-line1">Atlanta Metropolitan</span>
+        <span class="logo-line2">State College</span>
+      </div>
+    </a>
+    <div class="header-badge">Student &amp; Staff Portal</div>
+  </header>
+
+  <div class="page-body">
+
+    <!-- Left stats -->
+    <div class="side left">
+      <div class="side-heading">AMSC at a Glance</div>
+      <div class="stat-block">
+        <div class="num">1,800+</div>
+        <div class="desc">Students Enrolled</div>
+      </div>
+      <div class="red-rule"></div>
+      <div class="stat-block">
+        <div class="num">40+</div>
+        <div class="desc">Degrees &amp; Certificates</div>
+      </div>
+      <div class="red-rule"></div>
+      <div class="stat-block">
+        <div class="num">Since 1974</div>
+        <div class="desc">Serving Atlanta</div>
+      </div>
+    </div>
+
+    <!-- Login card -->
+    <div class="card">
+      <div class="card-banner">
+        <div class="banner-eyebrow">Trailblazer Portal</div>
+        <div class="banner-title">Welcome Back</div>
+        <div class="banner-sub">Sign in to your AMSC account</div>
+      </div>
+      <div class="card-accent"></div>
+
+      <div class="card-body" id="form-body">
+
+        <!-- CompanyHub embedded form -->
+        <script src="https://app.companyhub.com/scripts/companyhub.forms.js"></script>
+        <script>companyhubForms.render("https://app.companyhub.com/webtolead/renderform/Mjc1Mzg1?name=Atlanta_MetropolitanCollege", "companyhub-form");</script>
+        <div id="companyhub-form" style="width: 100%; min-height: 480px;"></div>
+
+        <div class="or-row"><span>or</span></div>
+
+      
+      </div>
+
+      <div class="card-foot">
+        <a href="https://www.atlm.edu/students/admissions.aspx" class="cta">Apply to AMSC</a>
+        <a href="#">IT Help Desk</a>
+        <a href="#">Password Reset</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+
+    <!-- Right quick links -->
+    <div class="side right">
+      <div class="side-heading">Quick Access</div>
+      <ul class="link-list">
+        <li><a href="https://atlm.gabest.usg.edu/StudentSelfService/"><span class="link-arrow">›</span>Banner Self-Service</a></li>
+        <li><a href="http://atlm.view.usg.edu"><span class="link-arrow">›</span>BrightSpace (D2L)</a></li>
+        <li><a href="https://www.atlm.edu/students/financial-aid.aspx"><span class="link-arrow">›</span>Financial Aid</a></li>
+        <li><a href="https://www.atlm.edu/students/student-activities.aspx"><span class="link-arrow">›</span>Student Activities</a></li>
+        <li><a href="https://www.atlm.edu/students/counseling-and-disability-services.aspx"><span class="link-arrow">›</span>Counseling Services</a></li>
+        <li><a href="https://www.atlm.edu/academics/office-of-the-registrar.aspx"><span class="link-arrow">›</span>Registrar</a></li>
+        <li><a href="https://www.atlm.edu/students/testing-services.aspx"><span class="link-arrow">›</span>Testing Services</a></li>
+      </ul>
+      <div class="red-rule" style="margin-top:28px;"></div>
+      <div style="font-size:0.75rem; color:var(--muted); line-height:1.8; margin-top:4px;">
+        Need help?<br/>
+        <strong style="color:var(--black); font-size:0.85rem;">(404) 756-4000</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    Atlanta Metropolitan State College &nbsp;·&nbsp; 1630 Metropolitan Pkwy SW, Atlanta, GA 30310<br/>
+    <a href="#">Accessibility</a> &nbsp;·&nbsp;
+    <a href="#">Non-Discrimination Policy</a> &nbsp;·&nbsp;
+    <a href="#">Title IX</a> &nbsp;·&nbsp;
+    <a href="http://www.usg.edu">University System of Georgia</a>
+  </footer>
+
+  <script>
+    // Auto-resize CompanyHub iframe when it loads
+    const observer = new MutationObserver(() => {
+      const iframe = document.querySelector('#companyhub-form iframe');
+      if (iframe) {
+        iframe.style.width  = '100%';
+        iframe.style.border = 'none';
+        iframe.removeAttribute('height');
+        iframe.addEventListener('load', () => {
+          try {
+            const h = iframe.contentDocument.body.scrollHeight;
+            iframe.style.height = h + 'px';
+          } catch(e) {
+            iframe.style.height = '520px';
+          }
+        });
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.getElementById('companyhub-form'), { childList: true, subtree: true });
+  </script>
+</body>
+</html>
